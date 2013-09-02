@@ -22,6 +22,8 @@ Past bugs:
     Source: This issue was caused by a subtlety in python for i in iterable loops, where deleting something 
             from the iterable causes the loop to skip the next object because it's index has been downshifted 
             without the index of the for loop being changed.
+            
+            For more info see the end of 7.3 here: http://docs.python.org/2/reference/compound_stmts.html#the-for-statement
 """
 
 import numpy.random as nprnd
