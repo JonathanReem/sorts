@@ -1,9 +1,8 @@
 import time
 import random
-from collections import defaultdict
 import numpy as np
-from numpySorts import np_sort, simple_np_sort
 
+from collections import defaultdict
 from itertools import chain, repeat
 
 def pure_countsort(unsorted_list):
