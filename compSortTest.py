@@ -22,7 +22,7 @@ Past bugs:
     Source: This issue was caused by a subtlety in python for i in iterable loops, where deleting something 
             from the iterable causes the loop to skip the next object because it's index has been downshifted 
             without the index of the for loop being changed.
-            
+
             For more info see the end of 7.3 here: http://docs.python.org/2/reference/compound_stmts.html#the-for-statement
 """
 
@@ -112,6 +112,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 					print "%s will not be tried again.\n" % (sort_name)
 
 	working_sorts = sorts_to_test       # Bad sorts have been removed. Name change is for readability.
+	print ''
 
 	for index, unsorted in enumerate(unsorted_lists):
 		leaderboard = [(times[sort.__name__][index], sort.__name__) for sort in working_sorts]
