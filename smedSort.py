@@ -1,6 +1,6 @@
 def smedSort(unsorted):
     # This line is necessary because we do pops from the list and it does damage to the original.
-    unsorted_list = unsorted
+    unsorted_list = [x for x in unsorted]
     if len(unsorted_list)<=14:
         for i in range(1,len(unsorted_list)):
             value=unsorted_list[i]

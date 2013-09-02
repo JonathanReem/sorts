@@ -1,8 +1,27 @@
+ #!/usr/bin/env python
+"""
+Author: Jonathan Reem
+Author email: jonathan.reem@gmail.com
+Date: September 2013
+Implementation of a comprehensive speed test for sorting algorithms.
+ Version 1.0
+Current Features:
+  Speed Testing with leaderboard generation over variable size lists
+  Options for changing list sizes, number of lists, and others. See docstring of compSortTest for more info.
+  Automatic error detection, and notification along with automatic debug list (10 item list) testing for easy debugging.
+Future Features:
+   Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
+  Better automatic debugging with pathological data options and more helpful errors.
+    Where was the problem in the large list? Where they the same length? etc.
+"""
+
+
 import numpy.random as nprnd
 import time
 from random import randint
 
-def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort = True, try_debug_list = True, verbose_timing = True):
+def compSortTest(sortList, max_size_order = 7, mult_list_size = True, 
+				 check_sort = True, try_debug_list = True, verbose_timing = True):
 	"""
 	Takes as input a list of sorts and runs tests on them.
 	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order.
@@ -14,7 +33,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 
 	unsorted_lists = []
 	if mult_list_size:
-		for i in range(1, max_size_order):
+		for i in range(2, max_size_order):
 			size_random_sample = 10 ** i
 			range_upper_limit = 10 ** randint(i-1, i)
 			print "Generating %i random ints with max size %i..." % (size_random_sample, range_upper_limit)
@@ -35,18 +54,26 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 	times = {}
 	sorted_lists = {}
 	sorts_to_test = sortList
-	for unsorted in unsorted_lists:
+	for index, unsorted in enumerate(unsorted_lists):
 		sorted_list = sorted(unsorted)
+		
+		if not verbose_timing:
+			print "Testing list %i..." % (index + 1)
+
 		for sort in sorts_to_test:
 			sort_name = sort.__name__
 			if verbose_timing:
 				print "For %i items, trying %s..." % (len(unsorted), sort.__name__)
-			start_time = time.clock()
+			start_time, end_time = 0, 0
 			try:
+				start_time = time.clock()
 				sorted_lists[sort_name].append(sort(unsorted))
+				end_time = time.clock()
 			except KeyError:
+				start_time = time.clock()
 				sorted_lists[sort_name] = list([sort(unsorted)])
-			end_time = time.clock()
+				end_time = time.clock()
+			
 			try: 
 				times[sort_name].append(end_time - start_time)
 			except KeyError:
@@ -58,6 +85,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 				try:
 					assert sorted_lists[sort_name][-1] == sorted_list
 				except AssertionError:
+					print ''
 					print "%s did NOT work for the random list with %i integers." % (sort_name, len(unsorted))
 					if try_debug_list:
 						print "Generating and testing debug list:"
@@ -65,16 +93,14 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 						print "Initial debug list: ", debug_list
 						print "Sorted debug list: ", sorted(debug_list)
 						print "Broken sort debug list: ", sort(debug_list)
+					print sort, sort.__name__
 					sorts_to_test.remove(sort)
-					print "%s will not be tried again." % (sort_name)
+					print "%s will not be tried again.\n" % (sort_name)
 
 	working_sorts = sorts_to_test
 
 	for index, unsorted in enumerate(unsorted_lists):
-		leaderboard = []
-		for sort in working_sorts:
-			sort_name = sort.__name__
-			leaderboard.append((times[sort_name].pop(0), sort_name))
+		leaderboard = [(times[sort.__name__][index], sort.__name__) for sort in working_sorts]
 		leaderboard = sorted(leaderboard)
 		
 		print "For list %i, with length %i and range %i: " % (index + 1, len(unsorted), max(unsorted) - min(unsorted) + 1)
@@ -89,7 +115,14 @@ def main():
 	def good_sort(unsorted_list):
 		return sorted(unsorted_list)
 
-	compSortTest([sorted, bad_sort, good_sort])
+	def slow_sort(unsorted_list):
+		# Slow operation:
+		string_version = ''
+		for num in range(1000):
+			string_version += str(num)
+		return sorted(unsorted_list)
+
+	compSortTest([bad_sort, good_sort, slow_sort])
 
 if __name__ == '__main__':
 	main()
