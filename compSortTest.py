@@ -14,8 +14,14 @@ Future Features:
   Better automatic debugging with pathological data options and more helpful errors.
     Where was the problem in the large list? Where they the same length? etc.
 Current bugs:
+  None (known, please make a pull request or email me if you find one)
+Past bugs:
   Bad sorts break the leaderboard by making consequent sorts not test for the list that the broken sort failed on.
-    Branch: Issue-1
+    Branch: Issue-1 
+    Status: FIXED
+    Source: This issue was caused by a subtlety in python for i in iterable loops, where deleting something 
+            from the iterable causes the loop to skip the next object because it's index has been downshifted 
+            without the index of the for loop being changed.
 """
 
 import numpy.random as nprnd
@@ -23,14 +29,14 @@ import time
 from random import randint
 
 def compSortTest(sortList, max_size_order = 7, mult_list_size = True, 
-				 check_sort = True, try_debug_list = True, verbose_timing = True):
+				 check_sort = True, try_debug_list = True, verbose_timing = False):
 	"""
 	Takes as input a list of sorts and runs tests on them.
 	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order.
 	Set mult_list_size to False to check on only one size of list. (10 million integers under 100 thousand)
 	Set check_sort to False to not do assertions on the sorted lists.
 	Set try_debug_list to False to not try the sort on a small list if it fails the assertion test.
-	Set verbose_timing to False to only show leaderboards and assertion errors.
+	Set verbose_timing to True to show timing data in real-time.
 	"""
 
 	unsorted_lists = []
@@ -57,14 +63,15 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 	times = {} # Will eventually contain sort_name:list_of_times_in_order for lookup and use on the leaderboard.
 	sorted_lists = {} # Will eventually contain sort_name:sorted_lists_in_order for lookup during sort checking.
 	sorts_to_test = sortList # We want to keep the initial list but want to be able to remove bad sorts from the loop.
-	for index, unsorted in enumerate(unsorted_lists):
+	for list_index, unsorted in enumerate(unsorted_lists):
 		sorted_list = sorted(unsorted)
 		
 		# Again, progress indicator.
 		if not verbose_timing:
-			print "Testing list %i..." % (index + 1)
+			print "Testing list %i..." % (list_index + 1)
 
-		for sort in sorts_to_test:
+		for sort_index, sort in enumerate(sorts_to_test[:]): # Copy made here to avoid a nasty bug where the for loop will 
+															 # skip the sort immediately after a broken sort.
 			sort_name = sort.__name__
 			
 			if verbose_timing:
@@ -102,7 +109,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 					sorts_to_test.remove(sort)
 					print "%s will not be tried again.\n" % (sort_name)
 
-	working_sorts = sorts_to_test       # Bad sorts have been removed. Name changed for readability.
+	working_sorts = sorts_to_test       # Bad sorts have been removed. Name change is for readability.
 
 	for index, unsorted in enumerate(unsorted_lists):
 		leaderboard = [(times[sort.__name__][index], sort.__name__) for sort in working_sorts]
@@ -125,7 +132,7 @@ def main():
 	def slow_sort(unsorted_list):
 		"Example of a slow sort."
 		string_version = ''
-		for num in range(1000):
+		for num in range(len(unsorted_list) / 10):
 			string_version += str(num)    # Slow operation
 		return sorted(unsorted_list)
 
