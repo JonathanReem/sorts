@@ -2,7 +2,6 @@ import time
 import random
 from collections import defaultdict
 import numpy as np
-import numpy.random as nprnd
 from numpySorts import np_sort, simple_np_sort
 
 from itertools import chain, repeat
