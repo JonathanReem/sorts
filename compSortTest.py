@@ -2,13 +2,14 @@ import numpy.random as nprnd
 import time
 from random import randint
 
-def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort = True, try_debug_list = True):
+def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort = True, try_debug_list = True, verbose_timing = True):
 	"""
 	Takes as input a list of sorts and runs tests on them.
 	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order.
 	Set mult_list_size to False to check on only one size of list. (10 million integers under 100 thousand)
 	Set check_sort to False to not do assertions on the sorted lists.
 	Set try_debug_list to False to not try the sort on a small list if it fails the assertion test.
+	Set verbose_timing to False to only show leaderboards and assertion errors.
 	"""
 
 	unsorted_lists = []
@@ -20,13 +21,16 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 			a = nprnd.randint(range_upper_limit, size=size_random_sample).tolist()
 			unsorted_lists.append(a)
 	else:
-		size_random_sample = 10 ** 7
-		range_upper_limit = 10 ** 5
+		size_random_sample = 10 ** max_size_order
+		range_upper_limit = 10 ** (max_size_order - 2)
 		print "Generating %i random ints with max size %i..." % (size_random_sample, range_upper_limit)
 		a = nprnd.randint(range_upper_limit, size=size_random_sample).tolist()
 		unsorted_lists.append(a)
 
 	print ''
+
+	if not verbose_timing:
+		print "Timing sorts... \n"
 
 	times = {}
 	sorted_lists = {}
@@ -35,7 +39,8 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 		sorted_list = sorted(unsorted)
 		for sort in sorts_to_test:
 			sort_name = sort.__name__
-			print "For %i items, trying %s..." % (len(unsorted), sort.__name__)
+			if verbose_timing:
+				print "For %i items, trying %s..." % (len(unsorted), sort.__name__)
 			start_time = time.clock()
 			try:
 				sorted_lists[sort_name].append(sort(unsorted))
@@ -46,7 +51,8 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 				times[sort_name].append(end_time - start_time)
 			except KeyError:
 				times[sort_name] = list([end_time - start_time])
-			print times[sort_name][-1]
+			if verbose_timing:
+				print times[sort_name][-1]
 
 			if check_sort:
 				try:
@@ -69,10 +75,9 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True, check_sort
 		for sort in working_sorts:
 			sort_name = sort.__name__
 			leaderboard.append((times[sort_name].pop(0), sort_name))
-			print len(times[sort_name])
 		leaderboard = sorted(leaderboard)
 		
-		print "For list number %i: " % (index)
+		print "For list %i, with length %i and range %i: " % (index + 1, len(unsorted), max(unsorted) - min(unsorted) + 1)
 		for sort_time, sort_name in leaderboard:
 			print sort_time, sort_name
 		print ''

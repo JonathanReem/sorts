@@ -3,21 +3,14 @@ import random
 from collections import defaultdict
 import numpy as np
 import numpy.random as nprnd
-
-def flatten(listOfLists):
-    "Flatten one level of nesting"
-    return chain.from_iterable(listOfLists)
-
+from numpySorts import np_sort, simple_np_sort
 
 from itertools import chain, repeat
 
 def pure_countsort(unsorted_list):
-    counts = {}
+    counts = defaultdict(int)
     for num in unsorted_list:
-        try:
-            counts[num] += 1
-        except KeyError:
-            counts[num] = 1
+        counts[num] += 1
 
     sorted_list = list(
         chain.from_iterable(
@@ -53,50 +46,12 @@ def countsort(unsorted_list):
 		sorted_list += [num]*counts[num]
 	return sorted_list
 
-def smedSort(unsorted_list):
-    if len(unsorted_list)<=14:
-        for i in range(1,len(unsorted_list)):
-            value=unsorted_list[i]
-            hole=i
-            
-            while hole>0 and value<unsorted_list[hole-1]:
-                unsorted_list[hole]=unsorted_list[hole-1]
-                hole-=1
-            unsorted_list[hole]=value
-        return unsorted_list
-    
-    pivot = smedSort([unsorted_list.pop(len(unsorted_list) / 2), unsorted_list.pop(0), unsorted_list.pop(-1)])
-     
-    less=[]
-    firstMiddle=[]
-    secondMiddle=[]
-    greater=[]
-    
-    for x in unsorted_list:
-        if x <= pivot[0]:
-            less.append(x)
-        elif x > pivot[0] and x < pivot[1]:
-            firstMiddle.append(x)
-        elif x >= pivot[1] and x < pivot[2]:
-            secondMiddle.append(x)
-        else:
-            greater.append(x)
-    
-    less = smedSort(less)
-    firstMiddle = smedSort(firstMiddle)
-    secondMiddle = smedSort(secondMiddle)
-    greater = smedSort(greater)
-
-    return less + list(pivot1) + firstMiddle + list(pivot2) + secondMiddle + list(pivot3) + greater
-
-def np_sort(a):
-    "Blazingly fast sort for INTEGERS ONLY that is 40 times faster than sorted() for lists with len > 100"
-    return np.repeat(np.arange(a.min(), 1+a.max()), 
-    	             np.bincount(a))
-def simple_np_sort(unsorted_np_array):
-	return unsorted_np_array.sort()
+from compSortTest import compSortTest
 
 def main():
+	compSortTest([countsort, timed_countsort, pure_countsort, sorted])
+
+def main1():
 	size_random_sample = 10 ** 6
 	range_upper_limit = 10 ** 5
 	print "Generating %i random ints..." % (size_random_sample)
@@ -184,7 +139,6 @@ def main():
 		print len(timsorted_a), len(timed_countsort_a), len(countsorted_a)
 
 		b = nprnd.randint(100, size=10).tolist()
-		pure_counsort_b = 
 
 		timed_countsort_b = timed_countsort(b)
 		print timed_countsort_b
