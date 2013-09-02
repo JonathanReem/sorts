@@ -99,7 +99,6 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 						print "Initial debug list: ", debug_list
 						print "Sorted debug list: ", sorted(debug_list)
 						print "Broken sort debug list: ", sort(debug_list)
-					print sort, sort.__name__
 					sorts_to_test.remove(sort)
 					print "%s will not be tried again.\n" % (sort_name)
 
