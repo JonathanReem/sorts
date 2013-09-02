@@ -50,23 +50,27 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 
 	print ''
 
+	# Gives a notification of progress if verbose timing is turned off.
 	if not verbose_timing:
 		print "Timing sorts... \n"
 
-	times = {}
-	sorted_lists = {}
-	sorts_to_test = sortList
+	times = {} # Will eventually contain sort_name:list_of_times_in_order for lookup and use on the leaderboard.
+	sorted_lists = {} # Will eventually contain sort_name:sorted_lists_in_order for lookup during sort checking.
+	sorts_to_test = sortList # We want to keep the initial list but want to be able to remove bad sorts from the loop.
 	for index, unsorted in enumerate(unsorted_lists):
 		sorted_list = sorted(unsorted)
 		
+		# Again, progress indicator.
 		if not verbose_timing:
 			print "Testing list %i..." % (index + 1)
 
 		for sort in sorts_to_test:
 			sort_name = sort.__name__
+			
 			if verbose_timing:
 				print "For %i items, trying %s..." % (len(unsorted), sort.__name__)
-			start_time, end_time = 0, 0
+			
+			start_time, end_time = 0, 0 #Timing is done inside the try/except blocks to avoid extra time from KeyErrors.
 			try:
 				start_time = time.clock()
 				sorted_lists[sort_name].append(sort(unsorted))
@@ -99,7 +103,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 					sorts_to_test.remove(sort)
 					print "%s will not be tried again.\n" % (sort_name)
 
-	working_sorts = sorts_to_test
+	working_sorts = sorts_to_test       # Bad sorts have been removed. Name changed for readability.
 
 	for index, unsorted in enumerate(unsorted_lists):
 		leaderboard = [(times[sort.__name__][index], sort.__name__) for sort in working_sorts]
@@ -112,16 +116,18 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 
 def main():
 	def bad_sort(unsorted_list):
+		"Example of a broken sort"
 		return unsorted_list
 
 	def good_sort(unsorted_list):
+		"Example of a good sort."
 		return sorted(unsorted_list)
 
 	def slow_sort(unsorted_list):
-		# Slow operation:
+		"Example of a slow sort."
 		string_version = ''
 		for num in range(1000):
-			string_version += str(num)
+			string_version += str(num)    # Slow operation
 		return sorted(unsorted_list)
 
 	compSortTest([bad_sort, good_sort, slow_sort])
