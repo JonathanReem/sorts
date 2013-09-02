@@ -10,9 +10,12 @@ Current Features:
   Options for changing list sizes, number of lists, and others. See docstring of compSortTest for more info.
   Automatic error detection, and notification along with automatic debug list (10 item list) testing for easy debugging.
 Future Features:
-   Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
+  Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
   Better automatic debugging with pathological data options and more helpful errors.
     Where was the problem in the large list? Where they the same length? etc.
+Current bugs:
+  Bad sorts break the leaderboard by making consequent sorts not test for the list that the broken sort failed on.
+    Branch: Issue-1
 """
 
 import numpy.random as nprnd
