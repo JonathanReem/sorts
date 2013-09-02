@@ -17,11 +17,9 @@ Contains the default numpy sort as simple_np_sort and a blazingly quick numpy bu
 compSortTest.py
 =====
 
-Implementation of a comprehensive speed test for sorting algorithms.
+####Implementation of a comprehensive speed test for sorting algorithms.
 
-Version 1.0
-
-Current Features:
+####Current Features: (As of version 1.0)
 
   Speed Testing with leaderboard generation over variable size lists
 
@@ -29,9 +27,9 @@ Current Features:
 
   Automatic error detection, and notification along with automatic debug list (10 item list) testing for easy debugging.
 
-Future Features:
+###Future Features:
 
-   Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
+  Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
 
   Better automatic debugging with pathological data options and more helpful errors.
 
