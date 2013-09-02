@@ -18,12 +18,21 @@ compSortTest.py
 =====
 
 Implementation of a comprehensive speed test for sorting algorithms.
- Version 1.0
+
+Version 1.0
+
 Current Features:
+
   Speed Testing with leaderboard generation over variable size lists
+
   Options for changing list sizes, number of lists, and others. See docstring of compSortTest for more info.
+
   Automatic error detection, and notification along with automatic debug list (10 item list) testing for easy debugging.
+
 Future Features:
+
    Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
+
   Better automatic debugging with pathological data options and more helpful errors.
+
     Where was the problem in the large list? Where they the same length? etc.
