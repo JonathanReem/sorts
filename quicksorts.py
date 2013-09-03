@@ -42,8 +42,34 @@ def singleQuicksort(unsorted_list):
 
 	return list(chain(lesser, [u[0]], greater))
 
+def singleSlowQuicksort(unsorted_list):
+	def prepPivot(u):
+		p_ind = random.randint(0, len(u) - 1)
+		u[0], u[p_ind] = u[p_ind], u[0]
+		return u
+
+	def partition(u):
+		lesser = []
+		greater = []
+		for num in u[1:]:
+			if num < u[0]:
+				lesser.append(num)
+			else:
+				greater.append(num)
+		return lesser, greater
+
+	u = unsorted_list[:]
+	
+	if len(u) < 2:
+		return u
+
+	u = prepPivot(u)
+	lesser, greater = partition(u)
+	
+	return singleSlowQuicksort(lesser) + [u[0]] + singleSlowQuicksort(greater)
+
 def main():
-	compSortTest([singleQuicksort, triQuicksort])
+	compSortTest([singleQuicksort, singleSlowQuicksort], max_size_order=7) # Sorts are too slow for higher orders.
 
 if __name__ == '__main__':
 	main()
