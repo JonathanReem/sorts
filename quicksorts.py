@@ -50,7 +50,7 @@ def singleQuicksort(unsorted_list):
 	
 	return list(chain(lesser, [u[0]], greater))
 
-def singleSlowQuicksort(unsorted_list):
+def singlePureQuicksort(unsorted_list):
 	def prepPivot(u):
 		p_ind = random.randint(0, len(u) - 1)
 		u[0], u[p_ind] = u[p_ind], u[0]
@@ -74,10 +74,10 @@ def singleSlowQuicksort(unsorted_list):
 	u = prepPivot(u)
 	lesser, greater = partition(u)
 	
-	return singleSlowQuicksort(lesser) + [u[0]] + singleSlowQuicksort(greater)
+	return singlePureQuicksort(lesser) + [u[0]] + singlePureQuicksort(greater)
 
 def main():
-	compSortTest([singleQuicksort, singleSlowQuicksort], max_size_order=5) # Sorts are too slow for higher orders with profiling.
+	compSortTest([singleQuicksort, singlePureQuicksort], max_size_order=5) # Sorts are too slow for higher orders with profiling.
 
 if __name__ == '__main__':
 	main()
