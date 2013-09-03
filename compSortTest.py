@@ -5,6 +5,9 @@ Author email: jonathan.reem@gmail.com
 Date: September 2013
 Implementation of a comprehensive speed test for sorting algorithms.
  Version 1.0
+Prerequisites:
+  numpy 1.7.0 or later
+    Replace lines 53 and 57 with random.randint calls instead of numpy random calls if you don't have it, know this is FAR slower.
 Current Features:
   Speed Testing with leaderboard generation over variable size lists
   Options for changing list sizes, number of lists, and others. See docstring of compSortTest for more info.
@@ -19,7 +22,7 @@ Past bugs:
   Bad sorts break the leaderboard by making consequent sorts not test for the list that the broken sort failed on.
     Branch: Issue-1 
     Status: FIXED
-    Source: This issue was caused by a subtlety in python for i in iterable loops, where deleting something 
+    Source: This issue was caused by a subtlety in python "for i in iterable" loops, where deleting something 
             from the iterable causes the loop to skip the next object because it's index has been downshifted 
             without the index of the for loop being changed.
 
@@ -28,13 +31,13 @@ Past bugs:
 
 import numpy.random as nprnd
 import time
-from random import randint
 
 def compSortTest(sortList, max_size_order = 7, mult_list_size = True, 
 				 check_sort = True, try_debug_list = True, verbose_timing = False):
 	"""
 	Takes as input a list of sorts and runs tests on them.
-	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order.
+	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order. Lengths start at 10 ** 2,
+	   so the default 7 generates 5 test lists.
 	Set mult_list_size to False to check on only one size of list. (10 million integers under 100 thousand)
 	Set check_sort to False to not do assertions on the sorted lists.
 	Set try_debug_list to False to not try the sort on a small list if it fails the assertion test.
@@ -45,7 +48,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 	if mult_list_size:
 		for i in range(2, max_size_order):
 			size_random_sample = 10 ** i
-			range_upper_limit = 10 ** randint(i-1, i)
+			range_upper_limit = 10 ** nprnd.randint(i-1, i)
 			print "Generating %i random ints with max size %i..." % (size_random_sample, range_upper_limit)
 			a = nprnd.randint(range_upper_limit, size=size_random_sample).tolist()
 			unsorted_lists.append(a)
