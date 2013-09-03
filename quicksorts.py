@@ -4,6 +4,7 @@ from compSortTest import compSortTest
 import numpy as np
 
 def triQuicksort(unsorted):
+	# NON-OPERATIONAL
 	unsorted_list = unsorted[:] #Make a copy so we leave the original list alone.
 	if len(unsorted_list) < 6:
 		return sorted(unsorted_list)
@@ -23,7 +24,6 @@ def triQuicksort(unsorted):
 	greater2 = triQuicksort(filter(lambda num: num >= pivots[2], unsorted_list))
 
 	return list(chain(lesser1, [pivots[0]], lesser2, [pivots[1]], greater1, [pivots[2]], greater2))
-
 
 def dualQuicksort(unsorted_list):
 	u = unsorted_list[:]
@@ -77,7 +77,7 @@ def singleSlowQuicksort(unsorted_list):
 	return singleSlowQuicksort(lesser) + [u[0]] + singleSlowQuicksort(greater)
 
 def main():
-	compSortTest([singleQuicksort, singleSlowQuicksort], max_size_order=7) # Sorts are too slow for higher orders.
+	compSortTest([singleQuicksort, singleSlowQuicksort], max_size_order=5) # Sorts are too slow for higher orders with profiling.
 
 if __name__ == '__main__':
 	main()
