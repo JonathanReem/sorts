@@ -9,7 +9,7 @@ def triQuicksort(unsorted):
 		return sorted(unsorted_list)
 	
 	pivot_indexes = np.random.choice(range(len(unsorted_list)), size=3)
-	
+
 	(unsorted_list[pivot_indexes[0]], unsorted_list[pivot_indexes[1]], unsorted_list[pivot_indexes[2]], 
 	   unsorted_list[0], unsorted_list[1], unsorted_list[2]) = (unsorted_list[0], unsorted_list[1], unsorted_list[2],
 	   unsorted_list[pivot_indexes[0]], unsorted_list[pivot_indexes[1]], unsorted_list[pivot_indexes[2]])
@@ -24,6 +24,11 @@ def triQuicksort(unsorted):
 
 	return list(chain(lesser1, [pivots[0]], lesser2, [pivots[1]], greater1, [pivots[2]], greater2))
 
+
+def dualQuicksort(unsorted_list):
+	u = unsorted_list[:]
+	if len(u) < 6:
+		return sorted(u)
 
 def singleQuicksort(unsorted_list):
 	u = unsorted_list[:]
