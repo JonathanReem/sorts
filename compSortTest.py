@@ -16,17 +16,6 @@ Future Features:
   Options for pathological data (sorted lists, almost sorted lists, lists with high repetition, near reversed lists, etc.)
   Better automatic debugging with pathological data options and more helpful errors.
     Where was the problem in the large list? Where they the same length? etc.
-Current bugs:
-  None (known, please make a pull request or email me if you find one)
-Past bugs:
-  Bad sorts break the leaderboard by making consequent sorts not test for the list that the broken sort failed on.
-    Branch: Issue-1 
-    Status: FIXED
-    Source: This issue was caused by a subtlety in python "for i in iterable" loops, where deleting something 
-            from the iterable causes the loop to skip the next object because it's index has been downshifted 
-            without the index of the for loop being changed.
-
-            For more info see the end of 7.3 here: http://docs.python.org/2/reference/compound_stmts.html#the-for-statement
 """
 
 import numpy.random as nprnd
