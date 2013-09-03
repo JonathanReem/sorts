@@ -31,15 +31,23 @@ def dualQuicksort(unsorted_list):
 		return sorted(u)
 
 def singleQuicksort(unsorted_list):
+	def prepPivot(u):
+		p_ind = np.random.choice(np.arange(len(unsorted_list)))
+		u[0], u[p_ind] = u[p_ind], u[0]
+		return u
+	def partition(u):
+		lesser = singleQuicksort(filter(lambda num: num <= u[0], u[1:]))
+		greater = singleQuicksort(filter(lambda num: num > u[0], u[1:]))
+		return lesser, greater
+
 	u = unsorted_list[:]
+
 	if len(u) < 6:
-		return sorted(u)
-	p_ind = np.random.choice(np.arange(len(unsorted_list)))
-	u[0], u[p_ind] = u[p_ind], u[0]
+		return sorted(u)	
 
-	lesser = singleQuicksort(filter(lambda num: num <= u[0], u[1:]))
-	greater = singleQuicksort(filter(lambda num: num > u[0], u[1:]))
-
+	u = prepPivot(u)
+	lesser, greater = partition(u)
+	
 	return list(chain(lesser, [u[0]], greater))
 
 def singleSlowQuicksort(unsorted_list):
