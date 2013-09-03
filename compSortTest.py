@@ -135,7 +135,7 @@ def main():
 	def slow_sort(unsorted_list):
 		"Example of a slow sort."
 		string_version = ''
-		for num in range(len(unsorted_list) / 10):
+		for num in range(len(unsorted_list) // 10):
 			string_version += str(num)    # Slow operation
 		return sorted(unsorted_list)
 
