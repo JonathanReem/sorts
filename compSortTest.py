@@ -20,9 +20,12 @@ Future Features:
 
 import numpy.random as nprnd
 import time
+import numpy as np
+from itertools import chain
 
 def compSortTest(sortList, max_size_order = 7, mult_list_size = True, 
-				 check_sort = True, try_debug_list = True, verbose_timing = False):
+				 check_sort = True, try_debug_list = True, verbose_timing = False,
+				 pathological = False):
 	"""
 	Takes as input a list of sorts and runs tests on them.
 	Set max_size_order to the largest list size you want where the size is 10 ** max_size_order. Lengths start at 10 ** 2,
@@ -31,6 +34,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 	Set check_sort to False to not do assertions on the sorted lists.
 	Set try_debug_list to False to not try the sort on a small list if it fails the assertion test.
 	Set verbose_timing to True to show timing data in real-time.
+	Set pathological to True to do testing on pathological data sets.
 	"""
 
 	unsorted_lists = []
@@ -62,7 +66,7 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 		
 		# Again, progress indicator.
 		if not verbose_timing:
-			print "Testing list %i..." % (list_index + 1)
+			print "Testing list %i of random data..." % (list_index + 1)
 
 		for sort_index, sort in enumerate(sorts_to_test[:]): # Copy made here to avoid a nasty bug where the for loop will 
 															 # skip the sort immediately after a broken sort.
@@ -106,6 +110,13 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 	working_sorts = sorts_to_test       # Bad sorts have been removed. Name change is for readability.
 	print ''
 
+	if pathological:
+		print "Generating pathological lists..."
+		print "WARNING: Pathological lists will only be generated and tested at the maximum size."
+		pathological_lists = genPathologicalLists(max_size_order)
+
+
+
 	for index, unsorted in enumerate(unsorted_lists):
 		leaderboard = [(times[sort.__name__][index], sort.__name__) for sort in working_sorts]
 		leaderboard = sorted(leaderboard)
@@ -114,6 +125,31 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 		for sort_time, sort_name in leaderboard:
 			print sort_time, sort_name
 		print ''
+
+def genPathologicalLists(max_size_order):
+	#Only used here because this method is ugly if done inline.
+	def genNearSorted(size_random_sample, range_upper_limit):
+		u = np.arange(size_random_sample - (size_random_sample // 100)).tolist()
+		for i in range(size_random_sample // 100):
+			u.insert(np.random.randint(0, len(u)), np.random.randint(0, range_upper_limit))
+		return u
+
+	size_random_sample = 10 ** max_size_order
+	range_upper_limit = 10 ** (max_size_order - 2)
+
+	pathological_types = ["reversed", "sorted", "sorted_except_last"] #, "near_sorted", "near_reversed"] # Currently unimplemented.
+	pathological_lists = []
+
+	# Using a list of lists here instead of a keyed dictionary because the modularized timing mechanism will use a list of lists as an input.
+	pathological_lists[0] = np.arange(size_random_sample).tolist()[::-1] #reversed
+	pathological_lists[1] = np.arange(size_random_sample).tolist() #sorted
+	pathological_lists[2] = chain(np.arange(size_random_sample - (size_random_sample // 100)).tolist(), 
+													 np.random.randint(range_upper_limit, size=size_random_sample // 100).tolist()) #sorted_except_last
+	
+	"""Both of these are VERY slow right now. Fix TODO."""
+	#pathological_lists["near_sorted"] = genNearSorted(size_random_sample, range_upper_limit)
+	#pathological_lists["near_reversed"] = pathological_lists[near_reversed][::-1]
+
 
 def main():
 	def bad_sort(unsorted_list):
