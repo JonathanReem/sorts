@@ -7,7 +7,7 @@ Implementation of a comprehensive speed test for sorting algorithms.
  Version 1.0
 Prerequisites:
   numpy 1.7.0 or later
-    Replace lines 53 and 57 with random.randint calls instead of numpy random calls if you don't have it, know this is FAR slower.
+    Replace lines 53 and 57 with random.randint calls instead of numpy.random.randint calls if you don't have it, know this is >FAR< slower.
 Current Features:
   Speed Testing with leaderboard generation over variable size lists
   Options for changing list sizes, number of lists, and others. See docstring of compSortTest for more info.
@@ -36,7 +36,6 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 	Set verbose_timing to True to show timing data in real-time.
 	Set pathological to True to do testing on pathological data sets.
 	"""
-
 	unsorted_lists = []
 	if mult_list_size:
 		for i in range(2, max_size_order):
@@ -101,8 +100,8 @@ def compSortTest(sortList, max_size_order = 7, mult_list_size = True,
 					if try_debug_list:
 						print "Generating and testing debug list:"
 						debug_list = nprnd.randint(10, size = 10).tolist()
-						print "Initial debug list: ", debug_list
-						print "Sorted debug list: ", sorted(debug_list)
+						print "Initial debug list:     ", debug_list
+						print "Sorted debug list:      ", sorted(debug_list)
 						print "Broken sort debug list: ", sort(debug_list)
 					sorts_to_test.remove(sort)
 					print "%s will not be tried again.\n" % (sort_name)
@@ -145,10 +144,8 @@ def genPathologicalLists(max_size_order):
 	pathological_lists[1] = np.arange(size_random_sample).tolist() #sorted
 	pathological_lists[2] = chain(np.arange(size_random_sample - (size_random_sample // 100)).tolist(), 
 													 np.random.randint(range_upper_limit, size=size_random_sample // 100).tolist()) #sorted_except_last
-	
-	"""Both of these are VERY slow right now. Fix TODO."""
-	#pathological_lists["near_sorted"] = genNearSorted(size_random_sample, range_upper_limit)
-	#pathological_lists["near_reversed"] = pathological_lists[near_reversed][::-1]
+	pathological_lists["near_sorted"] = genNearSorted(size_random_sample, range_upper_limit)
+	pathological_lists["near_reversed"] = genNearSorted(size_random_sample, range_upper_limit)[::-1]
 
 
 def main():
