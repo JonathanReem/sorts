@@ -6,7 +6,7 @@ from triPivotQuicksort import triQuicksort
 from compSortTest import compSortTest
 
 def main():
-	compSortTest([countsort, np_sort, sorted, triQuicksort])
+	compSortTest([countsort, np_sort, sorted, triQuicksort], pathological=True)
 
 if __name__ == '__main__':
 	main()
