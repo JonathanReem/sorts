@@ -69,11 +69,6 @@ def countsort(unsorted_list):
 
 	return sorted_list
 
-	# sorted_list = []
-	# for num in xrange(min(unsorted_list), max(unsorted_list) + 1):
-	# 	sorted_list += [num]*counts[num]
-	# return sorted_list
-
 from compSortTest import compSortTest
 
 def main():
