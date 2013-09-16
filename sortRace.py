@@ -14,7 +14,11 @@ def inf_generator(iteration=1):
 def race(sort):
   race_generator = inf_generator()
   for num in race_generator:
-    u = nprnd.randint(num, size=num)
+    u = []
+    if num > 100:
+      u = nprnd.randint(num, size=num / 100)
+    else:
+      u = nprnd.randint(num, size=num)
     start_time = time.clock()
     s = sort(u)
     end_time = time.clock()
