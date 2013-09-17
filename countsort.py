@@ -1,20 +1,31 @@
 import time
 import random
 import numpy as np
+import math
 
 from collections import defaultdict
 from itertools import chain, repeat
 
 def pure_countsort(unsorted_list):
     counts = defaultdict(int)
+    nums_in_list = set()
     for num in unsorted_list:
         counts[num] += 1
+        nums_in_list.add(num)
 
-    sorted_list = list(
-        chain.from_iterable(
-            repeat(num, counts[num])
-            for num in xrange(min(counts), max(counts) + 1)))
-    return sorted_list
+    if len(nums_in_list) * math.log(len(nums_in_list), 2) < max(counts) - min(counts):
+    	sorted_list = list(
+    		chain.from_iterable(
+    			repeat(num, counts[num])
+    			for num in sorted(list(nums_in_list))))
+    	return sorted_list
+
+    else:
+    	sorted_list = list(
+        	chain.from_iterable(
+            	repeat(num, counts[num])
+            	for num in xrange(min(counts), max(counts) + 1)))
+    	return sorted_list
 
 
 def timed_countsort(unsorted_list):
@@ -72,7 +83,7 @@ def countsort(unsorted_list):
 from compSortTest import compSortTest
 
 def main():
-	compSortTest([countsort, pure_countsort, timed_countsort, sorted], max_size_order = 7)
+	compSortTest([countsort, test_countsort, pure_countsort, timed_countsort, sorted], max_size_order = 7)
 
 if __name__ == '__main__':
 	main()
