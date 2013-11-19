@@ -70,7 +70,7 @@ def countsort(unsorted_list):
 
     return sorted_list
 
-from compSortTest import compSortTest
+from compSortTest import sort_test
 import sys
 
 def main():
@@ -79,7 +79,7 @@ def main():
         size = int(sys.argv[1])
     except IndexError:
         size = 6
-    compSortTest([countsort, pure_countsort, sorted], max_size_order=size)
+    sort_test([countsort, pure_countsort, sorted], max_size_order=size)
 
 if __name__ == '__main__':
     main()
