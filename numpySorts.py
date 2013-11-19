@@ -6,6 +6,6 @@ def np_sort(unsorted):
     return s.tolist()
 
 def simple_np_sort(a):
-	a = np.asarray(a)
-	s = a.sort()
-	return a.tolist()
+    a = np.asarray(a)
+    s = a.sort()
+    return a.tolist()

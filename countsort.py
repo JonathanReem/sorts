@@ -1,11 +1,11 @@
 import time
-import random
 import numpy as np
 
 from collections import defaultdict
 from itertools import chain, repeat
 
 def pure_countsort(unsorted_list):
+    """Pure-stdlib countsort, slower than numpy version."""
     counts = defaultdict(int)
     for num in unsorted_list:
         counts[num] += 1
@@ -18,6 +18,7 @@ def pure_countsort(unsorted_list):
 
 
 def timed_countsort(unsorted_list):
+    """Countsort that prints useful benchmarking information."""
     start_time = time.clock()
     counts = (np.bincount(np.array(unsorted_list))).tolist()
 
@@ -59,7 +60,7 @@ def test_countsort(unsorted_list):
 
 def countsort(unsorted_list):
     """Sort a list of integers (ONLY INTEGERS) in linear time.
-    2-3x faster than sorted() for certain lists."""
+    3-4x faster than sorted() for certain lists."""
     counts = (np.bincount(np.array(unsorted_list))).tolist()
 
     sorted_list = list(
@@ -73,7 +74,12 @@ from compSortTest import compSortTest
 import sys
 
 def main():
-    compSortTest([countsort, pure_countsort, sorted], max_size_order = int(sys.argv[1]))
+    """Runs compSortTest on the sorts in this module."""
+    try:
+        size = int(sys.argv[1])
+    except IndexError:
+        size = 6
+    compSortTest([countsort, pure_countsort, sorted], max_size_order=size)
 
 if __name__ == '__main__':
     main()
