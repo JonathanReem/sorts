@@ -16,11 +16,11 @@ def singleQuicksort(unsorted_list):
     u = unsorted_list[:]
 
     if len(u) < 6:
-        return sorted(u)    
+        return sorted(u)
 
     u = prepPivot(u)
     lesser, greater = partition(u)
-    
+
     return list(chain(lesser, [u[0]], greater))
 
 def singlePureQuicksort(unsorted_list):
@@ -40,13 +40,13 @@ def singlePureQuicksort(unsorted_list):
         return lesser, greater
 
     u = unsorted_list[:]
-    
+
     if len(u) < 2:
         return u
 
     u = prepPivot(u)
     lesser, greater = partition(u)
-    
+
     return singlePureQuicksort(lesser) + [u[0]] + singlePureQuicksort(greater)
 
 def main():
